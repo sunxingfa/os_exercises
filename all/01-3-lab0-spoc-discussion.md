@@ -52,12 +52,18 @@
 熟悉基本的git命令行操作命令，从github上的[ucore git repo](http://www.github.com/chyyuu/ucore_lab)下载ucore lab实验
 - [x]  
 
-> 
+> 答：
+   创建文件夹 mkdir test
+   进入文件夹 cd test
+   clone仓库 git clone http://www.github.com/chyyuu/ucore_lab
 
 尝试用qemu+gdb（or ECLIPSE-CDT）调试lab1
 - [x]  
 
-> 
+> 答：
+   清除多余文件：make clean
+   编译lab1 ：make
+   debug lab1，调出debug命令行：make debug
 
 对于如下的代码段，请说明”：“后面的数字是什么含义
 ```

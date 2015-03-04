@@ -8,6 +8,9 @@
 - [x]  
 
 >  http://www.imada.sdu.dk/Courses/DM18/Litteratur/IntelnATT.htm
+   答：在上面这个文库的帮助下，对于AT&T格式的X86-32汇编语言中的基本指令能够理解了，不过那些特殊寄存器的含义并不清楚，还有一些语句不能看懂。像：
+   lgdt gdtdesc
+   ljmp $PROT_MODE_CSEG, $protcseg
 
 虽然学过计算机原理和x86汇编（根据THU-CS的课程设置），但对ucore中涉及的哪些硬件设计或功能细节不够了解？
 - [x]  

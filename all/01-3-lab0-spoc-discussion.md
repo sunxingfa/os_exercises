@@ -47,7 +47,7 @@
 搭建好实验环境，请描述碰到的困难和解决的过程。
 - [x]  
 
-> 
+> 答：安装virtualbox的时候笔记本直接蓝屏，如此反复了好几次都是这样，上网查了一下原因其实也没有查到什么有用的结果，不过最后重新下载了一次安装包，居然就成功了！
 
 熟悉基本的git命令行操作命令，从github上的[ucore git repo](http://www.github.com/chyyuu/ucore_lab)下载ucore lab实验
 - [x]  

@@ -4,9 +4,11 @@
 
 ## 3.1 BIOS
  1. 比较UEFI和BIOS的区别。
-> 答：第一，UEFI具备文件系统的支持，它能够直接读取FAT分区中的文件，但是BIOS并不具备；启动操作系统时，UEFI不需要主引导记录，不     需要活动分区，但是BIOS要从硬盘上指定扇区读取系统启动代码，然后从活动分区中引导启动操作系统；UEFI允许植入硬件驱动；UEFI运     行的更快;UEFI对新硬件有很好的支持，而BIOS由于空间有限，响应能力较差。
+> 答：
+    第一，UEFI具备文件系统的支持，它能够直接读取FAT分区中的文件，但是BIOS并不具备；启动操作系统时，UEFI不需要主引导记录，不      需要活动分区，但是BIOS要从硬盘上指定扇区读取系统启动代码，然后从活动分区中引导启动操作系统；UEFI允许植入硬件驱动；UEFI运     行的更快;UEFI对新硬件有很好的支持，而BIOS由于空间有限，响应能力较差。
  1. 描述PXE的大致启动流程。
-> 答：经网上查阅资料了解到：PXE是动态路由。其通信协议采用TCP/IP，与Internet连接高效而可靠，PXE无盘工作站的启动过程分析如下：
+> 答：
+    经网上查阅资料了解到：PXE是动态路由。其通信协议采用TCP/IP，与Internet连接高效而可靠，PXE无盘工作站的启动过程分析如下：
     1.客户端个人电脑开机后，在TCP/IP Bootrom 获得控制权之前先做自我测试。
     2.Bootprom 送出BOOTP/DHCP要求以取得 IP。
     3.如果服务器收到个人电脑所送出的要求，就会送回BOOTP/DHCP回应，内容包括客户端的IP地址、预设网关、开机映像文件。否则，服务器会忽略这个要求。
@@ -17,7 +19,8 @@
 
 ## 3.2 系统启动流程
  1. 了解NTLDR的启动流程。
- > 答：经网上查阅资料了解到：NTLDR文件是一个隐藏的、只读的系统文件，位置在系统盘的根目录，用来装载操作系统。一般情况系统的引导过程是这样的：
+ > 答：
+    经网上查阅资料了解到：NTLDR文件是一个隐藏的、只读的系统文件，位置在系统盘的根目录，用来装载操作系统。一般情况系统的引导过程是这样的：
   1、电源自检程序开始运行
   2、主引导记录被装入内存，并且程序开始执行
   3、活动分区的引导扇区被装入内存
@@ -33,6 +36,7 @@
   12.Ntldr把控制权交给Ntoskrnl.exe，这时,启动程序结束,装载阶段开始。
  1. 了解GRUB的启动流程。
  > 答：
+   经网上查阅资料了解到，GRUB启动流程一般如下：
    1、系统加电后，BIOS进行检测系统参数 
    2、装载基本的引导装载程式stage1，用来装载第二引导程式
    3、装载第二引导程式，以便用户选择允许载入一个特定的操作系统，这步通常是用户显示一个菜单或者是输入命令等等 （stage2因为比较大，所以处于文件系统中）
@@ -43,7 +47,8 @@
 
 ## 3.3 中断、异常和系统调用比较
  1. 举例说明Linux中有哪些中断，哪些异常？
- > 答：中断是指在CPU正常运行期间，由于内外部事件或由程序预先安排的事件引起的CPU暂时停止正在运行的程序，转而为该内部或外部事件或预先安排的事件服务的程序中去，服务完毕后再返回去继续运行被暂时中断的程序。如插入外设引发的硬中断、CPU引发的同步中断、软中断等等； 异常，就是可以打断CPU正常运行流程的一些事情，比如外部中断，未定义的指令，试图修改只读的数据，执行swi指令，Software Interrupt Instruction，软件中断指令等。当这些事情发生时，CPU暂停当期的程序，先处理异常事件，然后再继续处理执行被中断的程序。
+ > 答：
+    中断是指在CPU正常运行期间，由于内外部事件或由程序预先安排的事件引起的CPU暂时停止正在运行的程序，转而为该内部或外部事件或    预先安排的事件服务的程序中去，服务完毕后再返回去继续运行被暂时中断的程序。如插入外设引发的硬中断、CPU引发的同步中断、软中    断等等； 异常，就是可以打断CPU正常运行流程的一些事情，比如外部中断，未定义的指令，试图修改只读的数据，执行swi指令，Softwar    e Interrupt Instruction，软件中断指令等。当这些事情发生时，CPU暂停当期的程序，先处理异常事件，然后再继续处理执行被中断的程    序。
 
  1. Linux的系统调用有哪些？大致的功能分类有哪些？  (w2l1)
  > 答：
@@ -65,9 +70,10 @@
  ```
  
  1. 以ucore lab8的answer为例，uCore的系统调用有哪些？大致的功能分类有哪些？(w2l1)
- > 答：uCore的系统调用有22个。大致的功能分类有进程管理、文件操作、内存管理等，如下所示:
-   1.文件操作: sys_open sys_close sys_read sys_write sys_seek sys_fstat sys_fsync sys_getcwd sys_getcwd sys_getdirentry sys_dup
-   2.进程管理: sys_exit sys_fork sys_wait sys_exec sys_yield sys_kill sys_getpid sys_putc sys_pgdir sys_gettime sys_lab6_set_priority sys_sleep
+ > 答：
+    uCore的系统调用有22个。大致的功能分类有进程管理、文件操作、内存管理等，如下所示:
+   1.文件操作: sys_open sys_close sys_read sys_write sys_seek sys_fstat sys_fsync sys_getcwd sys_getcwd sys_getdirentry     sys_dup
+   2.进程管理: sys_exit sys_fork sys_wait sys_exec sys_yield sys_kill sys_getpid sys_putc sys_pgdir sys_gettime   sys_lab6_set_priority sys_sleep
 
  ```
   + 采分点：说明了ucore的大致数量（二十几个），说明了ucore系统调用的主要分类（文件操作，进程管理，内存管理等）
@@ -79,15 +85,15 @@
  
 ## 3.4 linux系统调用分析
  1. 通过分析[lab1_ex0](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab1/lab1-ex0.md)了解Linux应用的系统调用编写和含义。(w2l1)
- > 答：objdump命令是Linux下的反汇编目标文件或者可执行文件的命令。
+ > 
+    答：objdump命令是Linux下的反汇编目标文件或者可执行文件的命令。
    objdump -f lab1-ex0.exe:显示lab1-ex0.exe的文件头信息
    objdump -d lab1-ex0.exe:显示lab1-ex0.exe的需要执行指令的那些section
    objdump -D lab1-ex0.exe:显示lab1-ex0.exe的所有section
    objdump -h lab1-ex0.exe:显示lab1-ex0.exe的SectionHeader信息
    objdump -x lab1-ex0.exe:显示lab1-ex0.exe的全部Header信息
    objdump -s lab1-ex0.exe:除了显示lab1-ex0.exe的全部Header信息，还显示他们对应的十六进制文件代码
-
-   nm命令显示关于指定 File 中符号的信息，文件可以是对象文件、可执行文件或对象文件库，如果文件没有包含符号信息，nm命令报告该情况，但不把它解释为出错条件，nm命令缺省情况下报告十进制符号表示法下的数字值。nm命令显示如下信息：库或对象名、符号名称、符号类型、值、大小、标志。命令格式一般为：nm option filename。随着中间的参数不同的话，输出的结果也不同：
+    nm命令显示关于指定 File 中符号的信息，文件可以是对象文件、可执行文件或对象文件库，如果文件没有包含符号信息，nm命令报告该情况，但不把它解释为出错条件，nm命令缺省情况下报告十进制符号表示法下的数字值。nm命令显示如下信息：库或对象名、符号名称、符号类型、值、大小、标志。命令格式一般为：nm option filename。随着中间的参数不同的话，输出的结果也不同：
    A Global absolute 符号
    a Local absolute 符号
    B Global bss 符号
@@ -98,7 +104,6 @@
    T Global text 符号
    t Local text 符号
    U 未定义符号
-   
    file用于检查文件类型，或检查块文件内部并获得文件系统信息。
    --help 显示帮助信息
    -v,--version 输出版本信息并退出
@@ -108,8 +113,6 @@
    -i,--mime 显示文件的mime类型
    -L,--dereference 显示符号链接所指向文件信息
    -d,--debug 输出调试信息
-   
-   
    系统调用：指运行在用户态的程序向操作系统内核请求需要更高权限运行的服务。它是用户态进入内核态的唯一窗口，提高了系统的安全性，并且使得编程从硬件设备的低级编程中解放出来。Linux中实现系统调用用了I386体系结构中的软件中断，由内核函数实现。
 
  ```

@@ -4,12 +4,40 @@
 
 ## 3.1 BIOS
  1. 比较UEFI和BIOS的区别。
- > 答：第一，UEFI具备文件系统的支持，它能够直接读取FAT分区中的文件，但是BIOS并不具备；启动操作系统时，UEFI不需要主引导记录，不需要活动分区，但是BIOS要从硬盘上指定扇区读取系统启动代码，然后从活动分区中引导启动操作系统；UEFI允许植入硬件驱动；UEFI运行的更快。
+ > 答：第一，UEFI具备文件系统的支持，它能够直接读取FAT分区中的文件，但是BIOS并不具备；启动操作系统时，UEFI不需要主引导记录，不需要活动分区，但是BIOS要从硬盘上指定扇区读取系统启动代码，然后从活动分区中引导启动操作系统；UEFI允许植入硬件驱动；UEFI运行的更快;UEFI对新硬件有很好的支持，而BIOS由于空间有限，响应能力较差。
  1. 描述PXE的大致启动流程。
+ > 答：经网上查阅资料了解到：PXE是动态路由。其通信协议采用TCP/IP，与Internet连接高效而可靠，PXE无盘工作站的启动过程分析如下：
+    1.客户端个人电脑开机后，在TCP/IP Bootrom 获得控制权之前先做自我测试。
+    2.Bootprom 送出BOOTP/DHCP要求以取得 IP。
+    3.如果服务器收到个人电脑所送出的要求，就会送回BOOTP/DHCP回应，内容包括客户端的IP地址、预设网关、开机映像文件。否则，服务器会忽略这个要求。
+    4.Bootprom 由 TFTP 通讯协议从服务器下载开机映像文件。
+    5.个人电脑通过这个开机映像文件开机， 这个开机文件可以只是单纯的开机程式也可以是操作系统。
+    6.开机映像文件将包含kernel loader及压缩过的kernel，此kernel将支持NTFS root系统。
+    7.远程客户端根据下载的文件启动机器。
 
 ## 3.2 系统启动流程
  1. 了解NTLDR的启动流程。
+ > 答：经网上查阅资料了解到：NTLDR文件是一个隐藏的、只读的系统文件，位置在系统盘的根目录，用来装载操作系统。一般情况系统的引导过程是这样的：
+  1、电源自检程序开始运行
+  2、主引导记录被装入内存，并且程序开始执行
+  3、活动分区的引导扇区被装入内存
+  4、NTLDR从引导扇区被装入并初始化
+  5、将处理器的实模式改为32位平滑内存模式
+  6、NTLDR开始运行适当的小文件系统驱动程序。小文件系统驱动程序是建立在NTLDR内部的，它能读FAT或NTFS。
+  7、NTLDR读boot.ini文件
+  8、NTLDR装载所选操作系统。如果windows NT/windows 2000/windows XP/windows server 2003这些操作系统被选择，NTLDR运行Ntdetect。
+对于其他的操作系统，NTLDR装载并运行Bootsect.dos然后向它传递控制。windows NT过程结束。
+  9.Ntdetect搜索计算机硬件并将列表传送给NTLDR，以便将这些信息写进\\HKE Y_LOCAL_MACHINE\HARDWARE中。
+  10.然后NTLDR装载Ntoskrnl.exe，Hal.dll和系统信息集合。
+  11.Ntldr搜索系统信息集合，并装载设备驱动配置以便设备在启动时开始工作
+  12.Ntldr把控制权交给Ntoskrnl.exe，这时,启动程序结束,装载阶段开始。
  1. 了解GRUB的启动流程。
+ > 答：
+   1、系统加电后，BIOS进行检测系统参数 
+   2、装载基本的引导装载程式stage1，用来装载第二引导程式
+   3、装载第二引导程式，以便用户选择允许载入一个特定的操作系统，这步通常是用户显示一个菜单或者是输入命令等等 （stage2因为比较大，所以处于文件系统中）
+   4、装载在一个特定分区上的操作系统
+
  1. 比较NTLDR和GRUB的功能有差异。
  1. 了解u-boot的功能。
 
@@ -37,7 +65,10 @@
  ```
  
  1. 以ucore lab8的answer为例，uCore的系统调用有哪些？大致的功能分类有哪些？(w2l1)
- 
+ > 答：uCore的系统调用有22个。大致的功能分类有进程管理、文件操作、内存管理等，如下所示:
+   1.文件操作: sys_open sys_close sys_read sys_write sys_seek sys_fstat sys_fsync sys_getcwd sys_getcwd sys_getdirentry sys_dup
+   2.进程管理: sys_exit sys_fork sys_wait sys_exec sys_yield sys_kill sys_getpid sys_putc sys_pgdir sys_gettime sys_lab6_set_priority sys_sleep
+
  ```
   + 采分点：说明了ucore的大致数量（二十几个），说明了ucore系统调用的主要分类（文件操作，进程管理，内存管理等）
   - 答案没有涉及上述两个要点；（0分）
@@ -56,12 +87,27 @@
    objdump -x lab1-ex0.exe:显示lab1-ex0.exe的全部Header信息
    objdump -s lab1-ex0.exe:除了显示lab1-ex0.exe的全部Header信息，还显示他们对应的十六进制文件代码
 
-   nm命令显示关于指定 File 中符号的信息，文件可以是对象文件、可执行文件或对象文件库，如果文件没有包含符号信息，nm命令报告该情况，但不把它解释为出错条件，nm命令缺省情况下报告十进制符号表示法下的数字值。nm命令显示如下信息：库或对象名、符号名称、符号类型、值、大小、标志。
+   nm命令显示关于指定 File 中符号的信息，文件可以是对象文件、可执行文件或对象文件库，如果文件没有包含符号信息，nm命令报告该情况，但不把它解释为出错条件，nm命令缺省情况下报告十进制符号表示法下的数字值。nm命令显示如下信息：库或对象名、符号名称、符号类型、值、大小、标志。命令格式一般为：nm option filename。随着中间的参数不同的话，输出的结果也不同：
+   A Global absolute 符号
+   a Local absolute 符号
+   B Global bss 符号
+   b Local bss 符号
+   D Global data 符号
+   d Local data 符号
+   f 源文件名称符号
+   T Global text 符号
+   t Local text 符号
+   U 未定义符号
    
    file用于检查文件类型，或检查块文件内部并获得文件系统信息。
-   -b 　不显示文件名称，只显示文件类型。在shell脚本中时有用
-   -i     显示MIME类别
-   -L 　直接显示符号连接所指向的文件的类别
+   --help 显示帮助信息
+   -v,--version 输出版本信息并退出
+   -b,--brief 不显示文件名字，只显示文件类型。在shell脚本中时有用
+   -f,--files-fromFILE 读取待测试的名称文件
+   -F,--seperatorSTRING 使用字符串作为分隔符，不再使用“：”
+   -i,--mime 显示文件的mime类型
+   -L,--dereference 显示符号链接所指向文件信息
+   -d,--debug 输出调试信息
    
    
    系统调用：指运行在用户态的程序向操作系统内核请求需要更高权限运行的服务。它是用户态进入内核态的唯一窗口，提高了系统的安全性，并且使得编程从硬件设备的低级编程中解放出来。Linux中实现系统调用用了I386体系结构中的软件中断，由内核函数实现。

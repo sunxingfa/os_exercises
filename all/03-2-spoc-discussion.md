@@ -22,7 +22,7 @@ NOTICE
  ```
 - [x]  
 
->  
+>  64bit支持的物理内存限制为2^64，约为16TB；64bitCPU采用多级页表，设页大小是4096B.每个页表项长为8B，4096B=2^12，64-12=52，共有2^52页，一页中可以装4096/8=2^9个页表项，9*6>52，至少需要6级页表。当我们获得一个64位的地址时，地址就变成了6级页号加一个页内偏移，原来大的一张线性表，将其切为若干断，段的个数，和最后一级的页表宽度一样，然后他每一个子页表的起头，作为上一级页表的物理页号，以此类推。当查找时根据一级页号找到二级页表以此类推下去，找到六级页表后，再加上页内偏移即为物理地址。
 
 ## 小组思考题
 ---
@@ -80,7 +80,32 @@ Virtual Address 7268:
     --> pte index:0x13  pte contents:(valid 1, pfn 0x65)
       --> Translates to Physical Address 0xca8 --> Value: 16
 ```
-
+Virtual Address 6c74 11011 00011 10100
+--> pde index : 0x1b pde contents:(valid 1,pfn 0x20)
+--> pte index : 0x03 pte contents :(valid 1 pfn 0x61)
+--> Translates to Physical Address 0x6114 --> Value: 06
+Virtual Address 6b22 11010 11001 00010
+--> pde index : 0x1a pde contents:(valid 1,pfn 0x52)
+--> pte index : 0x19 pte contents :(valid 1,pfn 0x47)
+--> Translates to Physical Address 0x4702 --> Value: 1a
+Virtual Address 03df
+--> pde index : 0x00 pde contents:(valid 1,pfn 0x5a)
+--> pte index : 0x1e pte contents :(valid 1 pfn 0x05)
+--> Translates to Physical Address --> Value: f
+Virtual Address 69dc
+-->Fault (page table entry not valid)
+Virtual Address 317a
+--> 0x1e
+Virtual Address 4546
+-->Fault (page table entry not valid)
+Virtual Address 2c03
+-->0x16
+Virtual Address 7fd7
+-->Fault (page table entry not valid)
+Virtual Address 390e
+-->Fault (page directory entry not valid)
+Virtual Address 748b
+-->Fault (page table entry not valid)
 
 
 （3）请基于你对原理课二级页表的理解，并参考Lab2建页表的过程，设计一个应用程序（可基于python, ruby, C, C++，LISP等）可模拟实现(2)题中描述的抽象OS，可正确完成二级页表转换。
